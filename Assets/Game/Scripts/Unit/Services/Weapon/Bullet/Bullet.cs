@@ -15,7 +15,7 @@ public class Bullet : MonoBehaviour
     public Unit shooter;
 
 
-    public virtual void Shoot(Vector2 forceDirection, Unit shooter)
+    public virtual void Shoot(Vector2 force, Unit shooter)
     {
         StopCoroutine(EndShotAfterSomeTime());
         foreach (var obj in objectsToHide)
@@ -23,13 +23,18 @@ public class Bullet : MonoBehaviour
             obj.SetActive(true);
         }
         trailRenderer.Clear();
-        GetComponent<Rigidbody2D>().velocity = forceDirection;
         //GetComponent<Rigidbody2D>().AddForce(forceDirection, ForceMode2D.Impulse);
         //GetComponent<Rigidbody2D>().AddForce(forceDirection);
         shootVfx.gameObject.SetActive(true);
         hitVfx.gameObject.SetActive(false);
         this.shooter = shooter;
         StartCoroutine(EndShotAfterSomeTime());
+        StartCoroutine(SetVelocityAfterOneUpdate(force));
+    }
+    IEnumerator SetVelocityAfterOneUpdate(Vector2 force)
+    {
+        yield return null;
+        GetComponent<Rigidbody2D>().velocity = force;
     }
 
     public virtual IEnumerator EndShoot()
@@ -52,7 +57,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer != 7 || collision.gameObject.GetComponent<Unit>() == shooter)
+        if (collision.gameObject.layer != LayerMask.NameToLayer("Unit") || collision.gameObject.GetComponent<Unit>() == shooter)
             return;
 
         StartCoroutine(EndShoot());

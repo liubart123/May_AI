@@ -12,12 +12,12 @@ public class SimpleUnitWeaponAction : UnitWeaponAction
 
     public override void ImplementWeaponAction()
     {
-        if (!unit.weaponService.reloader.IsLoaded())
+        if (!unit.WeaponService.Reloader.IsLoaded())
             return;
-        if (unit.unitObserverCollection.unitsInShootRange.enemies.Count == 0)
+        if (unit.UnitObserverCollection.unitsInShootRange.enemies.Count == 0)
             return;
-        var target = unit.unitObserverCollection.unitsInShootRange.enemies[
-            Random.Range(0, unit.unitObserverCollection.unitsInShootRange.enemies.Count - 1)];
-        unit.weaponService.Shoot(target);
+        var target = unit.UnitObserverCollection.unitsInShootRange.enemies[
+            Random.Range(0, unit.UnitObserverCollection.unitsInShootRange.enemies.Count - 1)];
+        unit.WeaponService.Shoot(target);
     }
 }

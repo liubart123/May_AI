@@ -6,9 +6,14 @@ public class SimpleWeaponService : WeaponService
 {
     public override void Shoot(Unit target)
     {
-        if (!reloader.IsLoaded())
+        if (!Reloader.IsLoaded())
             return;
-        shooter.Shoot(aimer.CalculateAim(target));
-        reloader.Unload();
+
+        //TODO: change to use shotRangeObserver
+        if ((target.transform.position - Owner.transform.position).magnitude > shootRange)
+            return;
+
+        Shooter.Shoot(Aimer.CalculateAim(target));
+        Reloader.Unload();
     }
 }

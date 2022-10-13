@@ -4,16 +4,35 @@ using UnityEngine;
 
 public class UnitObserverCollection : MonoBehaviour
 {
+
+    [HideInInspector]
+    private Unit owner;
     public UnitsInRangeObserver unitsInShootRange, unitsInViewRange;
-    // Start is called before the first frame update
-    void Start()
+
+    public Unit Owner
     {
-        
+        get
+        {
+            if (owner == null)
+            {
+                owner = GetComponent<Unit>();
+            }
+            return owner;
+        }
+        set => owner = value;
     }
 
-    // Update is called once per frame
-    void Update()
+    void Start()
     {
-        
+        InitializeRangeObservers();
+    }
+
+
+    public void InitializeRangeObservers()
+    {
+        if (unitsInShootRange != null)
+            unitsInShootRange.owner = Owner;
+        if (unitsInViewRange != null)
+            unitsInViewRange.owner = Owner;
     }
 }

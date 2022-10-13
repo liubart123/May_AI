@@ -4,30 +4,37 @@ using UnityEngine;
 
 public class UnitsInRangeObserver : MonoBehaviour
 {
+    [HideInInspector]
     public Unit owner;
     public CircleCollider2D triggerRange;
     public List<Unit> allies, enemies;
 
+
     private void Start()
     {
-        var hits = Physics2D.CircleCastAll(transform.position, triggerRange.radius, Vector2.zero, 0.001f, LayerMask.GetMask("Unit"));
-        if (hits != null)
-        {
-            foreach(var hit in hits)
-            {
-                if (hit.collider?.gameObject == null)
-                    continue;
-                var unit = hit.collider.gameObject.GetComponent<Unit>();
-                if (unit == owner || unit == null)
-                    continue;
-                AddUnit(unit);
-            }
-        }
+        //var hits = Physics2D.CircleCastAll(transform.position, triggerRange.radius, Vector2.zero, 0.001f, LayerMask.GetMask("Unit"));
+        //if (hits != null)
+        //{
+        //    foreach(var hit in hits)
+        //    {
+        //        if (hit.collider?.gameObject == null)
+        //            continue;
+        //        var unit = hit.collider.gameObject.GetComponent<Unit>();
+        //        if (unit == owner || unit == null)
+        //            continue;
+        //        AddUnit(unit);
+        //    }
+        //}
+    }
+
+    public float GetRadius()
+    {
+        return transform.localScale.x;  //now it's scale.x, because collider.radius is always 1
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer != LayerMask.GetMask("Unit"))
+        if (collision.gameObject.layer != LayerMask.NameToLayer("Unit"))
             return;
 
         var unit = collision.gameObject.GetComponent<Unit>();
@@ -36,7 +43,7 @@ public class UnitsInRangeObserver : MonoBehaviour
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.layer != LayerMask.GetMask("Unit"))
+        if (collision.gameObject.layer != LayerMask.NameToLayer("Unit"))
             return;
 
         var unit = collision.gameObject.GetComponent<Unit>();

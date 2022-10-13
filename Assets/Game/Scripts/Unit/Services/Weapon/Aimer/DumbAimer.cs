@@ -10,7 +10,7 @@ public class DumbAimer : Aimer
         var aimResult = LinearAimCalculator.CalculateAim(
             transform.position,
             target.GetComponent<Rigidbody2D>(),
-            WeaponService.shooter.ShootForce);
+            WeaponService.Shooter.ShootForce);
         if (aimResult.isAvailableForHitting == false)
             return target.transform.position - WeaponService.transform.position;
         return aimResult.aim;
